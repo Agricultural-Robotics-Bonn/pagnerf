@@ -28,7 +28,7 @@
 
 ### [Project Page](https://lvisroot.github.io/pagnerf) | [Pre-Print](https://arxiv.org/abs/2309.05339) | [Data](http://agrobotics.uni-bonn.de/sweet_pepper_dataset/)
 
-<img src='imgs/hero_landscape.png'/>
+<img src='imgs/hero_landscape.jpg'/>
 
 **PAg-NeRF** uses state-of-the-art accelerated NeRFs and online pose optimization to produce 3D consistent panoptic representations of challenging agricultural environments.
 <!-- ## TL;DR - Test Pre-Trained model -->
@@ -57,6 +57,8 @@ pip install -r requirements.txt
 ```
 cd [path_to_pagnerf_repo]
 
+conda activate wisp
+
 bash scripts/get_bup20.sh                         # ~70GB
 bash scripts/get_bup20_mask2former_detections.sh  # ~58GB
 
@@ -65,7 +67,7 @@ python train.py
 
 ## Under The Hood
 
-<img src='imgs/pipeline.png'/>
+<img src='imgs/pipeline.jpg'/>
 
 We use state-of-the-art permutohedral feature hash-grids to encode 3D space, allowing our system to be fast and memory efficient. Our architecture uses novel delta grid that computes panoptic features by correcting the color features, leveraging the similarity between modalities. Thanks to the implicit sparseness of hash-grids, we are able to reduce the panoptic capacity to only have valid values where corrections are needed.
 We avoid propagating gradients from the panoptic to the color branch to ensure the panoptic grid only learns corrections over the color features. Our grid based architecture allows us to decoded all render quantities with very shallow MLPs. To learn 3D consistent instant IDs from inconsistent ID still-image predictions, we employ a modified linear assignment loss, tackling the fix scale nature of several agricultural datasets, rejecting repeated IDs. To obtain high-detail multi-view consistent renders, we also perform online pose optimization, making our system end-to-end trainable.
