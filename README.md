@@ -4,22 +4,22 @@
 
   <div align="center">
     <a href="http://claussmitt.com">
-    Claus Smitt 🌱 &nbsp;&nbsp;</a>
+    Claus Smitt 🌱</a> &nbsp;&nbsp;
     <a href="http://agrobotics.uni-bonn.de/michael-halstead/">
-    Michael Halstead 🌱 &nbsp;&nbsp;</a>
+    Michael Halstead 🌱</a>  &nbsp;&nbsp;
     <a href="http://agrobotics.uni-bonn.de/patrick-zimmer/">
-    Patrick Zimmer 🌱 &nbsp;&nbsp;</a>
+    Patrick Zimmer 🌱</a> &nbsp;&nbsp;
     <a href="https://www.ipb.uni-bonn.de/people/thomas-laebe/">
-    Thomas Läbe 📸 &nbsp;&nbsp;</a>
+    Thomas Läbe 📸</a> &nbsp;&nbsp;
     <a href="http://agrobotics.uni-bonn.de/esra-guclu/">
-    Esra Guclu 🌱 &nbsp;&nbsp;</a>
+    Esra Guclu 🌱</a> &nbsp;&nbsp;
     <a href="https://www.ipb.uni-bonn.de/people/cyrill-stachniss/">
-    Cyrill Stachniss 📸 &nbsp;&nbsp;</a>
+    Cyrill Stachniss 📸</a> &nbsp;&nbsp;
     <a href="https://sites.google.com/site/christophersmccool/">
-    Chris McCool 🌱 &nbsp;&nbsp;</a>
+    Chris McCool 🌱</a> &nbsp;&nbsp;
     <br><br>
     <a href="http://agrobotics.uni-bonn.de/">
-    🌱 AgRobotics, Institute of Agriculture</a> &nbsp;&nbsp;&nbsp;&nbsp 
+    🌱 AgRobotics, Institute of Agriculture</a> &nbsp;&nbsp;&nbsp;&nbsp;
     <a href="https://www.ipb.uni-bonn.de/">
     📸 Institute of Photogrammetry</a>
     </br><a href="https://www.uni-bonn.de/">
