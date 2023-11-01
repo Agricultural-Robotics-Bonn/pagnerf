@@ -1,0 +1,75 @@
+# Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+#
+# NVIDIA CORPORATION & AFFILIATES and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION & AFFILIATES is strictly prohibited.
+
+parent: 'mean_shift_contrastive.yaml'
+
+global:
+    exp_name: 'office-improve'
+    default_channel: 'rgb'
+
+dataset:
+    bg_color: 'black'
+    mip: 0
+    num_rays_sampled_per_img: 2048
+
+optimizer:
+    lr: 0.001
+
+renderer:
+    num_steps: 350
+    raymarch_type: "ray"
+    render_batch: 8000
+
+
+trainer:
+    epochs: 400
+    batch_size: 5
+    prune_every: 20
+
+    render_every: -1
+    valid_every: 50
+    save_every: 50
+    save_as_new: true
+
+    inst_epoch_start: -1 #200
+    sem_epoch_start: -1 #200
+
+    inst_temperature: 0.07
+    # positive/negative examples weight ratio for supervised contrastive
+    inst_pn_ratio: 0.5
+
+
+net:
+    sem_conf_enable: False
+    inst_conf_enable: False
+    sem_sigmoid: False
+    sem_normalize: False
+    sem_softmax: True
+
+
+    sem_num_layers: 2
+    sem_hidden_dim: 128
+
+    inst_num_layers: 2
+    inst_hidden_dim: 128
+
+    # cat hash-grid rgb & sem
+    # pretrained: /home/csmitt/git/instance_nerf/_results/logs/runs/office-from-pretrained/20230227-151658/model-200.pth
+    # sem_detach: False
+
+    # cat hash-grid rgb only
+    # pretrained: '_results/logs/runs/office-rgb-pretrained/20230227-131315/model-200.pth'
+    # model_format: 'params_only'
+
+    # Fully trained
+    # pretrained: /home/csmitt/git/instance_nerf/_results/logs/runs/office-improve/20230320-112712/model-400.pth
+
+    # perfect labels
+    # pretrained: /home/csmitt/git/instance_nerf/_results/logs/runs/office-improve/20230320-164151/model-400.pth
+
+    # pretrained: /home/csmitt/git/instance_nerf/_results/logs/runs/office-improve/20230321-165949/model-200.pth

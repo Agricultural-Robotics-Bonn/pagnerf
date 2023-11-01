@@ -1,0 +1,89 @@
+# Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+#
+# NVIDIA CORPORATION & AFFILIATES and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION & AFFILIATES is strictly prohibited.
+
+global:
+    exp_name: 'bup20_panoli'
+    default_channel: 'rgb'
+
+dataset:
+    dataset_type: 'multiview'
+    multiview_dataset_format: 'bup20'
+    dataset_path: '~/datasets/BUP_20'
+
+    mip: 0
+    val_mip: 2
+    bg_color: 'white'
+    
+    num_rays_sampled_per_img: 2048
+    dataset_center_idx: 10
+    load_modes: ['imgs', 'semantics','instance','preds_deeplab']
+
+    max_depth: 1.4
+
+    pose_src: metashape
+
+
+optimizer:
+    optimizer_type: adam
+    lr: 0.001
+    extrinsics_lr: 0.0005
+    grid_lr_weight: 40
+    rgb_weight: 1
+    
+renderer:
+    tracer_type: 'PanopticPackedRFTracer'
+        
+    num_steps: 512
+    raymarch_type: "ray"
+    shading_mode: 'rb'
+    
+    render_batch: 8000
+
+    ray_max_travel: 2.0
+
+
+
+
+
+trainer:
+    trainer_type: 'PanopticTrainer'
+    log_dir: _results/logs/runs/debug/
+
+    inst_segment_reg_weight: 1.35
+
+    epochs: 800
+    batch_size: 6
+    prune_every: 201
+
+    valid_every: 100
+    num_val_frames_to_save: 15
+
+    save_every: 200
+    save_as_new: true
+
+    render_val_labels: true
+
+    inst_epoch_start: 0
+    sem_epoch_start: 0
+
+    sem_weight: 1
+    inst_weight: 1
+
+    inst_loss: 'linear_assignment_things'
+
+net:
+    nef_type: 'PanopticLiftingNeF'
+    
+    sem_num_layers: 5
+    sem_hidden_dim: 256
+
+    inst_num_layers: 3
+    inst_hidden_dim: 256
+
+    inst_softmax: True
+    sem_softmax: True

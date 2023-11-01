@@ -1,0 +1,116 @@
+# Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+#
+# NVIDIA CORPORATION & AFFILIATES and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION & AFFILIATES is strictly prohibited.
+
+global:
+    exp_name: 'semantic-contrastive'
+    # default_channel: 'inst_embedding'
+    # default_channel: 'clusters'
+    default_channel: 'rgb'
+
+optimizer:
+    optimizer_type: 'adam'
+    # optimizer_type: 'sgd'
+    # optimizer_type: 'rmsprop'
+    
+    # weight_decay: 0.0005
+    
+    lr: 0.001
+    lr_warmup_epochs: 0
+    lr_div_factor: 1e4
+    use_lr_scheduler: False
+
+dataset:
+    dataset_type: 'multiview'
+    multiview_dataset_format: 'replica'
+    num_rays_sampled_per_img: 2048 #4096
+    mip: 0
+    val_mip: 2
+    bg_color: 'black'
+    load_modes: ['imgs', 'semantics','instance', panoptic_preds_ade20k_mask2former] #,'instance']
+    
+    dataset_path: '/home/csmitt/data/replica/prerenders/office_3/Sequence_1'
+    model_rescaling: 'largest' #'snap_to_bottom'
+
+renderer:
+    tracer_type: 'PackedRFTracer'
+    num_steps: 512
+    raymarch_type: ray
+    render_batch: 2000 #4000
+    camera_origin:
+        - -3.0
+        - 0.65
+        - -3.0
+    shading_mode: 'rb'
+    render_res:
+        - 1024
+        - 1024
+
+trainer:
+    trainer_type: 'PanopticTrainer'
+    epochs: 200
+    batch_size: 25 #8
+    model_format: 'full'
+    valid_every: 50
+    save_every: 100
+    render_every: 10
+    sem_weight: 1e-2
+    # sem_temperature: 0.7
+
+    num_val_frames_to_save: 15
+
+    # growth_strategy: 'finetocoarse'
+    # growth_strategy: 'shrink'
+    # growth_strategy: 'increase'
+    # grow_every: 2
+
+    lod_anneling: False
+    lod_annel_epochs: 10
+
+    num_clustering_samples: 20000
+    num_clustering_workers: 4
+
+    # instance parameters
+    inst_epoch_start: 0
+    inst_weight: 1e-2
+    
+    inst_normalize: False
+    inst_dist_func: 'cos' # ['l1', 'l2', 'cos']
+    inst_loss: sup_contrastive
+    # inst_temperature: 0.07
+
+
+# Instant-NGP encoding
+grid:
+    grid_type: 'HashGrid'
+    num_lods: 14
+    interpolation_type: 'linear'
+    multiscale_type: 'cat'
+    feature_dim: 2
+    feature_std: 0.01
+    tree_type: 'geometric'
+    max_grid_res: 2048
+    codebook_bitwidth: 19
+
+net:
+    nef_type: 'MeanShiftContrastiveNef'
+    hidden_dim: 64
+    num_layers: 1
+    num_classes: 20
+    sem_hidden_dim: 64
+
+    sem_num_layers: 2
+    sem_hidden_dim: 64
+
+    inst_num_layers: 2
+    inst_hidden_dim: 64
+
+    sem_detach: True
+    inst_detach: True
+
+embedder:
+    embedder_type: 'positional'

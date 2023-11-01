@@ -1,0 +1,129 @@
+# Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+#
+# NVIDIA CORPORATION & AFFILIATES and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION & AFFILIATES is strictly prohibited.
+
+global:
+    exp_name: 'bup20_lin_assign/grid_tests'
+    default_channel: 'rgb'
+
+dataset:
+    bg_color: 'white'
+    mip: 0
+    num_rays_sampled_per_img: 4096 #2048
+    dataset_center_idx: 10
+    load_modes: ['imgs', 'semantics','instance','preds_pan_unet']
+
+optimizer:
+    optimizer_type: adam
+    lr: 0.001
+    extrinsics_lr: 0.0001
+    # use_lr_scheduler: True
+    # lr_warmup_epochs: 100
+    # lr_div_factor: 15
+    # weight_decay: 0.0001
+    # grid_lr_weight: 1000
+    # delta_grid_lr_weight: 10
+    rgb_weight: 10
+
+    # grid_tvl1_reg: 1e-7
+    # grid_tvl2_reg: 1e-7
+    # delta_grid_tvl1_reg: 1e-7
+    # delta_grid_tvl2_reg: 1e-7
+
+    tv_window_size: 0.0001
+    tv_edge_num_samples: 100
+    
+    # ray_sparcity_reg: 1e-5
+
+renderer:
+    # tracer_type: 'PackedRFTracer'
+    tracer_type: 'PanopticDDensityPackedRFTracer'
+    
+    # num_steps: 2
+    # samples_per_voxel: 256
+    # raymarch_type: "voxel"
+    
+    num_steps: 512
+    raymarch_type: "ray"
+    
+    render_batch: 8000
+    # render_wiggle: True
+
+trainer:
+    log_dir: _results/logs/runs/
+    # sem_conf_enable: True
+    # inst_conf_enable: True
+
+    # inst_segment_reg_weight: 0.001
+    # sem_segment_reg_weight: 0.001
+
+
+    optimize_extrinsics: True
+    extrinsics_epoch_start: 0 #51
+    extrinsics_epoch_end: 900 #200 #51
+
+    optimize_val_extrinsics: True
+    val_extrinsics_every: 10 #51
+    val_extrinsics_start: 1 #51
+    val_extrinsics_end: 900
+    
+    lod_anneling: False
+    lod_annel_epochs: 400
+    lod_annel_epoch_start: 0
+    
+    epochs: 800
+    batch_size: 6
+    prune_every: -1 #201 #151 #51 #20
+
+    render_every: -1
+    valid_every: 1 #100
+    save_every: 200
+    save_as_new: true
+
+    render_val_labels: true
+
+    inst_epoch_start: 0 #201
+    sem_epoch_start: 0 #201
+
+    sem_weight: 0.1
+    inst_weight: 1
+
+    inst_loss: 'sup_contrastive'
+
+grid:
+    grid_type: 'PermutoGrid'
+    num_lods: 24
+    coarsest_scale: 1.0
+    feature_dim: 2
+    finest_scale: 0.0001
+    capacity_log_2: 18
+
+# grid:
+#     grid_type: 'TriplanarGrid'
+#     interpolation_type: 'linear'
+#     multiscale_type: 'cat'
+#     feature_dim: 4
+#     feature_std: 0.01
+#     base_lod: 5
+#     num_lods: 4
+
+net:
+    nef_type: 'PanopticNeF'
+    
+    sem_num_layers: 2
+    sem_hidden_dim: 64
+
+    inst_num_layers: 1
+    inst_hidden_dim: 64
+    # separate_sem_grid: True
+
+    inst_softmax: True
+
+    # model_format: params_only
+    # pretrained: _results/logs/runs/bup20_lin_assign/refinement/20230607-151801/model-800.pth
+    
+    # pretrained: _results/logs/runs/bup20_wip/20230508-200327/model-50.pth

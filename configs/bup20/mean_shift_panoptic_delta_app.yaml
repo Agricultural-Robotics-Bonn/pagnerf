@@ -1,0 +1,140 @@
+# Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+#
+# NVIDIA CORPORATION & AFFILIATES and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION & AFFILIATES is strictly prohibited.
+
+parent: 'mean_shift_panoptic_delta.yaml'
+
+global:
+    exp_name: 'bup20_permuto_delta'
+    default_channel: 'rgb'
+
+dataset:
+    bg_color: 'black'
+    mip: 0
+    num_rays_sampled_per_img: 4096 #2048
+    dataset_center_idx: 10
+    load_modes: ['imgs', 'semantics','instance','preds_maskrcnn']
+
+optimizer:
+    lr: 0.01
+    extrinsics_lr: 0.0001
+    use_lr_scheduler: False
+
+
+renderer:
+    # tracer_type: 'PanopticDDensityPackedRFTracer'
+    tracer_type: 'PackedRFTracer'
+    num_steps: 512
+    raymarch_type: "ray"
+    render_batch: 8000
+    # render_wiggle: True
+
+trainer:
+
+    optimize_extrinsics: True
+    extrinsics_epoch_start: 0 #51
+    extrinsics_epoch_end: 900 #51
+
+    optimize_val_extrinsics: True
+    val_extrinsics_every: 10 #51
+    val_extrinsics_start: 1 #51
+    val_extrinsics_end: 900
+    
+    lod_anneling: False
+    lod_annel_epochs: 400
+    lod_annel_epoch_start: 0
+    
+    epochs: 800
+    batch_size: 15
+    prune_every: -1 #101 #151 #51 #20
+
+    render_every: -1
+    valid_every: 100
+    save_every: 200
+    save_as_new: true
+
+    render_val_labels: true
+
+    inst_epoch_start: 0 #101
+    sem_epoch_start: 0 #101
+
+    inst_temperature: 0.07
+
+    # sem_weight: 1
+    inst_weight: 1
+
+grid:
+    grid_type: 'PermutoGrid'
+    num_lods: 24
+    coarsest_scale: 1.0
+    feature_dim: 2
+    finest_scale: 0.0001
+    capacity_log_2: 18
+
+net:
+    nef_type: 'MeanShiftPanopticDeltaNeF'
+    
+    # sem_num_layers: 2
+    # sem_hidden_dim: 64
+
+    inst_num_layers: 2
+    inst_hidden_dim: 64
+    separate_sem_grid: True
+
+
+    # pretrained: _results/logs/runs/bup20_wip/20230508-200327/model-50.pth
+
+# grid:
+#     grid_type: 'HashGrid'
+#     num_lods: 14
+#     interpolation_type: 'linear'
+#     multiscale_type: 'cat'
+#     feature_dim: 2
+#     feature_std: 0.01
+#     tree_type: 'geometric'
+#     max_grid_res: 2048
+#     codebook_bitwidth: 19
+
+# grid:
+#     grid_type: 'HashGridTinyCudaNN'
+#     num_lods: 14
+#     interpolation_type: 'linear'
+#     multiscale_type: 'cat'
+#     feature_dim: 2
+#     feature_std: 0.01
+#     tree_type: 'geometric'
+#     max_grid_res: 2048
+#     codebook_bitwidth: 19
+
+# grid:
+#     grid_type: 'CodebookOctreeGrid'
+#     interpolation_type: 'linear'
+#     multiscale_type: 'cat'
+#     feature_dim: 5
+#     feature_std: 0.01
+#     base_lod: 5
+#     num_lods: 4
+#     codebook_bitwidth: 4
+
+# grid:
+#     grid_type: 'CodebookOctreeGrid'
+#     interpolation_type: 'linear'
+#     multiscale_type: 'sum'
+#     feature_dim: 5
+#     feature_std: 0.01
+#     base_lod: 5
+#     num_lods: 4
+#     codebook_bitwidth: 4
+
+# grid:
+#     grid_type: 'TriplanarGrid'
+#     interpolation_type: 'linear'
+#     multiscale_type: 'cat'
+#     feature_dim: 4
+#     feature_std: 0.01
+#     base_lod: 5
+#     num_lods: 4

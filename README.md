@@ -1,2 +1,2 @@
-# pagnerf
-PAg-NeRF, a fast and efficient end-to-end panoptic 3D representations for agricultural robotics
+# instance_nerf
+semi-supervised instance NeRF
