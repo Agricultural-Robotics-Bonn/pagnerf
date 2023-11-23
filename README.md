@@ -62,7 +62,7 @@ conda activate wisp
 bash scripts/get_bup20.sh                         # ~70GB
 bash scripts/get_bup20_mask2former_detections.sh  # ~58GB
 
-python train.py
+./train.sh
 ```
 
 ## Under The Hood
