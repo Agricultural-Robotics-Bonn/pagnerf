@@ -29,7 +29,6 @@ from wisp.core import Rays
 # from wisp.ops.image.metrics import psnr, lpips, ssim
 from functools import partial
 from pc_nerf.ba_pipeline import BAPipeline
-from pc_nerf.ba_pipeline_lie import BAPipelineLie
 
 from utils.lod_anneling import LODAnneling
 from loss.regularizers import segment_consistency_regularizer
@@ -289,7 +288,7 @@ class PanopticTrainer(BaseTrainer):
         self.optimizer = self.optim_cls(params, **self.optim_params)
 
         if self.optimize_extrinsics:
-            assert isinstance(self.pipeline, (BAPipeline, BAPipelineLie)), (f'Camera extrinsics optimization was requested, but pipeline is of class "{type(self.pipeline)}"',
+            assert isinstance(self.pipeline, BAPipeline), (f'Camera extrinsics optimization was requested, but pipeline is of class "{type(self.pipeline)}"',
                                                             'a BAPipeline is required. Check your configs to resolve this')
             
             lr = self.extrinsics_lr if self.extrinsics_lr >= 0 else self.lr            
@@ -303,7 +302,7 @@ class PanopticTrainer(BaseTrainer):
     def begin_epoch(self):
         # Add estrinisics parameters to optimizer if required
         if self.optimize_extrinsics:
-            assert isinstance(self.pipeline, (BAPipeline, BAPipelineLie)), (f'Camera extrinsics optimization was requested, but pipeline is of class "{type(self.pipeline)}"',
+            assert isinstance(self.pipeline, BAPipeline), (f'Camera extrinsics optimization was requested, but pipeline is of class "{type(self.pipeline)}"',
                                                            'a BAPipeline is required. Check your configs to resolve this')      
             # Add train camera patameters to optimizer
             self.pipeline.cameras.extrinsics.parameters().requires_grad = self.extrinsics_epoch_start <= self.epoch <= self.extrinsics_epoch_end
@@ -419,7 +418,7 @@ class PanopticTrainer(BaseTrainer):
         # for extrinsics optimization
         cam_ids = data['cam_id'] if 'cam_id' in data else None
         
-        rays_key = 'rays' if not isinstance(self.pipeline, (BAPipeline, BAPipelineLie)) else 'base_rays'
+        rays_key = 'rays' if not isinstance(self.pipeline, BAPipeline) else 'base_rays'
         rays = data[rays_key].to(self.device)
           
         timer.check("map to device")
