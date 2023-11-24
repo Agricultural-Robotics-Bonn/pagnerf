@@ -7,5 +7,4 @@
 # license agreement from NVIDIA CORPORATION & AFFILIATES is strictly prohibited.
 
 from .nerf_standard import *
-from .blender_instance import *
 from .format_base import *
