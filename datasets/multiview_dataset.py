@@ -89,9 +89,6 @@ class MultiviewDataset(Dataset):
         if self.multiview_dataset_format in ['standard', 'NeRFStandard','nerf_standard']:
             from .formats.nerf_standard import NeRFStandard
             self.dataset_format = NeRFStandard
-        elif self.multiview_dataset_format in ['blender', 'BlenderInstance', 'blender_instance']:
-            from .formats.blender_instance import BlenderInstance
-            self.dataset_format = BlenderInstance
         elif self.multiview_dataset_format in ['replica', 'ReplicaInstance', 'replica_instance']:
             from .formats.replica_instance import ReplicaInstance
             self.dataset_format = ReplicaInstance
