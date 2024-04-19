@@ -7,6 +7,7 @@
 # license agreement from NVIDIA CORPORATION & AFFILIATES is strictly prohibited.
 
 from copy import deepcopy
+import shutil
 import cv2
 from tqdm import tqdm
 import numpy as np
@@ -158,7 +159,18 @@ class BUP20(DatasetFormatBase):
             dataset_class = BUP20InferenceDataset
         else:
             raise NotImplementedError(f'Dataset mode "{mode}" not implemented, only ["train", "inference"] available.')
+        
+        # Rename dataset files with to BUP_20 if symlinks are not present
+        for ext in ['.json', '.yaml']:
+            bup_path = root / ('BUP_20' + ext)
+            cka_path = root / ('CKA_sweet_pepper_2020_summer' + ext)
 
+            if not bup_path.is_file():
+                if not cka_path.is_file():
+                    raise FileNotFoundError(f"BUP20 dataset files not found in path: {root}")
+                
+                shutil.copy(cka_path, bup_path)
+        
         data = dataset_class(root / 'BUP_20.json',
                              subset=split,
                              seq_num_frames=40,
