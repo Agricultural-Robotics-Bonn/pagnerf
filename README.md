@@ -39,7 +39,7 @@ Tested on Ubuntu 20.04; CUDA 11.7
 
 - Install [CUDA and cuDDN](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html).
 
-- [Install Kaolin Wisp](https://kaolin-wisp.readthedocs.io/en/latest/pages/install.html) ([release 0.1.0](https://github.com/NVIDIAGameWorks/kaolin-wisp/releases/tag/v0.1.0)) for your CUDA version.
+- [Install Kaolin Wisp](https://kaolin-wisp.readthedocs.io/en/latest/pages/install.html) ([release 0.1.1](https://github.com/NVIDIAGameWorks/kaolin-wisp/releases/tag/v0.1.1)) for your CUDA version.
 (This process will install [PyTorch](https://pytorch.org/) and NVIDIA's [Kaolin library](https://kaolin.readthedocs.io/en/latest/) in a [conda](https://conda.io/projects/conda/en/latest/index.html) environment)
 
 - [Install Permutohedral Grid Encoding](https://github.com/RaduAlexandru/permutohedral_encoding#install) in the same `conda` environment.
