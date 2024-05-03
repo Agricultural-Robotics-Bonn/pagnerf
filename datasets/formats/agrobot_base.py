@@ -54,8 +54,6 @@ class SequenceDataset(Dataset):
           self.dataset_config = yaml.load(fp, Loader=yaml.FullLoader)
 
       self.image_sets = self.dataset_config["image_sets"]
-      self.stds = self.dataset_config["img_mu"]
-      self.means = self.dataset_config["img_std"]
 
       # initialize COCO api for instance annotations
       f = io.StringIO()
@@ -594,8 +592,6 @@ class InferenceDataset(SequenceDataset):
           self.dataset_config = yaml.load(fp, Loader=yaml.FullLoader)
 
       self.image_sets = self.dataset_config["image_sets"]
-      self.stds = self.dataset_config["img_mu"]
-      self.means = self.dataset_config["img_std"]
 
       # For inference in thie whole dataset we want to run on all images of all sets 
       self.img_set_ids = self.image_sets['train'] + self.image_sets['valid'] + self.image_sets['eval']
